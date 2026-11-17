@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conservation of Momentum</title>
+<style>
+:root{--navy:#14365C;--ink:#1B2333;--amber:#F2A81D;--teal:#1B998B;--red:#E4572E;--blue:#3A6EA5;--tint:#EEF3F8;--line:#D5DEE9;--bg:#F7F9FC;--card:#fff;--muted:#5B6678;--ok:#1E7F4F;--bad:#C0392B}
+*{box-sizing:border-box}
+body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:17px}
+h1,h2,h3{font-family:Cambria,Georgia,serif;color:var(--navy);line-height:1.2}
+header{background:var(--navy);color:#fff;padding:44px 16px 34px;position:relative;overflow:hidden}
+header .wrap{max-width:1080px;margin:auto}
+header .kicker{color:var(--amber);font-weight:700;letter-spacing:.12em;font-size:.85rem}
+header h1{color:#fff;font-size:clamp(2.1rem,6vw,3.4rem);margin:.3em 0 .2em}
+header p{color:#D8E4F2;font-size:1.1rem;margin:0;max-width:640px}
+.ruler{height:26px;margin-top:26px;background:repeating-linear-gradient(90deg,var(--amber) 0 1.5px,transparent 1.5px 12px);mask:linear-gradient(#000 0 0) top/100% 45% no-repeat,repeating-linear-gradient(90deg,#000 0 1.5px,transparent 1.5px 60px);-webkit-mask:linear-gradient(#000 0 0) top/100% 45% no-repeat,repeating-linear-gradient(90deg,#000 0 1.5px,transparent 1.5px 60px);border-top:2px solid var(--amber)}
+nav{position:sticky;top:0;z-index:20;background:#fff;box-shadow:0 2px 10px rgba(20,54,92,.08);overflow-x:auto;white-space:nowrap;padding:10px 16px}
+nav a{display:inline-block;color:var(--navy);text-decoration:none;font-weight:700;font-size:.92rem;padding:7px 13px;border-radius:999px;background:var(--tint);margin-right:6px}
+nav a:hover,nav a:focus{background:var(--amber);color:var(--ink)}
+main{max-width:1080px;margin:0 auto;padding:10px 16px 40px}
+section{background:var(--card);border-radius:16px;padding:26px;margin:22px 0;box-shadow:0 4px 18px rgba(20,54,92,.06);scroll-margin-top:70px}
+section>h2{margin-top:0;font-size:1.7rem}
+.num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--amber);color:var(--ink);font-weight:700;margin-right:10px;font-family:Calibri,Arial,sans-serif;font-size:1rem;vertical-align:middle}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--tint);border-radius:12px;padding:14px 16px}
+.card b{color:var(--navy)}
+.tw{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th{background:var(--navy);color:#fff;text-align:left;padding:9px 11px;font-size:.95rem}
+td{padding:9px 11px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--tint)}
+details.note{border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:10px 0}
+details.note summary{cursor:pointer;font-weight:700;color:var(--navy);padding:8px 0;font-size:1.08rem}
+.facts{background:#FFF4DC;border-radius:12px;padding:14px 18px}
+.facts li{margin:3px 0}
+ol.routine li{margin:4px 0}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--navy);color:#fff;margin:4px 6px 4px 0}
+button.alt{background:var(--tint);color:var(--navy)}
+button.amber{background:var(--amber);color:var(--ink)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+/* slides */
+.deck{position:relative}
+.slide{min-height:330px;border-radius:14px;padding:28px 30px;background:var(--tint)}
+.slide.dark{background:var(--navy);color:#fff}
+.slide.dark h3{color:#fff}
+.slide h3{font-size:1.7rem;margin:0 0 14px}
+.slide ul{margin:0;padding-left:22px;font-size:1.1rem}
+.slide li{margin:6px 0}
+.deckbar{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.deckbar span{color:var(--muted);font-weight:700;margin-left:auto}
+/* examples */
+.ex{border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.ex h3{margin:0 0 6px;font-size:1.2rem}
+.step{display:none;align-items:flex-start;gap:12px;padding:8px 10px;border-radius:9px;background:var(--tint);margin:6px 0}
+.step.show{display:flex}
+.step .lab{min-width:92px;font-weight:700;color:var(--blue)}
+.ans{display:none;background:#FFF4DC;padding:10px 14px;border-radius:9px;margin-top:8px;font-weight:700}
+.ans.show{display:block}
+/* worksheets & quiz */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tabs button{background:var(--tint);color:var(--navy)}
+.tabs button[aria-selected=true]{background:var(--navy);color:#fff}
+.meta{color:var(--muted);margin:4px 0 10px}
+.q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
+.q .qt{font-weight:700}
+.q .mk{float:right;color:var(--muted);font-weight:700;font-size:.9rem}
+.hint{color:var(--teal);font-style:italic;font-size:.95rem}
+.opts label{display:block;padding:8px 10px;border-radius:9px;background:var(--tint);margin:6px 0;cursor:pointer}
+.opts input{margin-right:8px}
+.numrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.numrow input{font:inherit;padding:9px 11px;border:1px solid #B9C6D6;border-radius:9px;width:180px}
+.fb{font-weight:700;margin-top:6px}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.score{font-size:1.25rem;font-weight:700;color:var(--navy);margin-top:10px}
+.drill{display:grid;gap:12px;grid-template-columns:1fr;max-width:560px}
+.drill .prob{font-size:1.4rem;font-weight:700;color:var(--navy)}
+.hw{text-align:center;padding:10px 0}
+.hw a.btn{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;padding:15px 26px;border-radius:12px;font-size:1.1rem}
+.warn{background:#FFF4DC;border-radius:12px;padding:12px 16px}
+.check label{display:block;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check input{margin-right:10px;transform:scale(1.2)}
+footer{text-align:center;color:var(--muted);padding:26px 16px 36px;font-size:.92rem}
+@media (max-width:600px){section{padding:18px}.slide{padding:20px}.slide h3{font-size:1.35rem}.step{flex-direction:column;gap:2px}}
+@media print{nav,button,.deckbar,.hw{display:none!important}section{box-shadow:none;break-inside:avoid-page}.step,.ans{display:flex!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="kicker">PHYSICS • GRADE 12 • AMERICAN SYSTEM (NGSS)</div>
+<h1>Conservation of Momentum</h1>
+<p style="color:#fff;font-weight:700;margin-bottom:8px">Conservation of Momentum: Collisions, Explosions and Recoil</p>
+<p>Your interactive study guide: watch the lesson, read the notes, follow worked examples, practise, then submit your homework.</p>
+<div class="ruler" aria-hidden="true"></div>
+</div></header>
+<nav aria-label="Sections">
+<a href="#objectives">Objectives</a><a href="#slides">Lesson slides</a><a href="#notes">Study notes</a><a href="#examples">Worked examples</a><a href="#drill">Quick drill</a><a href="#worksheets">Worksheets</a><a href="#test">EST practice test</a><a href="#homework">Homework</a><a href="#checklist">Checklist</a>
+</nav>
+<main>
+
+<section id="objectives">
+<h2><span class="num">1</span>Learning objectives & vocabulary</h2>
+<p>By the end of this lesson you can:</p>
+<ul><li>State the law of conservation of momentum for an isolated system (no external net force).</li><li>Explain why momentum is conserved using Newton's third law.</li><li>Solve collisions in which objects stick together: (m₁ + m₂) vf = m₁v₁i + m₂v₂i.</li><li>Solve collisions in which objects bounce, finding an unknown final velocity.</li><li>Classify collisions as elastic, inelastic or perfectly inelastic using kinetic energy.</li><li>Solve recoil and explosion problems where the total momentum is zero.</li><li>Apply conservation of momentum to ballistic pendulums and two-dimensional collisions.</li></ul>
+<h3>Key vocabulary</h3>
+<div class="grid"><div class="card"><b>System</b><br>The group of objects we choose to study together.</div><div class="card"><b>Isolated (closed) system</b><br>A system with no external net force acting on it.</div><div class="card"><b>Law of conservation of momentum</b><br>In an isolated system, total momentum before = total momentum after.</div><div class="card"><b>Collision</b><br>A short interaction in which objects exert large forces on each other.</div><div class="card"><b>Elastic collision</b><br>Momentum AND kinetic energy are both conserved; objects bounce.</div><div class="card"><b>Inelastic collision</b><br>Momentum is conserved but some kinetic energy is lost (to heat, sound, deformation).</div><div class="card"><b>Perfectly inelastic collision</b><br>The objects stick together and move with one common velocity; the most KE is lost.</div><div class="card"><b>Explosion</b><br>Objects at rest fly apart; total momentum stays zero.</div><div class="card"><b>Recoil</b><br>The backward motion of a gun or launcher when it fires something forward.</div><div class="card"><b>Initial velocity (vi)</b><br>The velocity before the interaction.</div><div class="card"><b>Final velocity (vf)</b><br>The velocity after the interaction.</div><div class="card"><b>Ballistic pendulum</b><br>A block that catches a bullet and swings up, used to measure the bullet's speed.</div></div>
+</section>
+
+<section id="slides">
+<h2><span class="num">2</span>Lesson slides</h2>
+<p class="meta">Use the buttons or your ← → keys. The full PowerPoint is available from your teacher.</p>
+<div class="deck"><div id="slide" class="slide" aria-live="polite"></div>
+<div class="deckbar"><button class="alt" id="prev">← Previous</button><button id="next">Next →</button><span id="slideNo"></span></div></div>
+</section>
+
+<section id="notes">
+<h2><span class="num">3</span>Student summary & study notes</h2>
+<p class="meta">Tap a heading to open or close it.</p>
+<details class="note" open><summary>1. The law of conservation of momentum</summary><p>If no external net force acts on a system, its total momentum stays constant: total momentum before = total momentum after.</p><p>For two objects: m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f. Momentum is a vector, so choose a positive direction and keep the signs. Internal forces (between the objects) cannot change the total.</p></details><details class="note" open><summary>2. Why momentum is conserved</summary><p>During a collision, object 1 pushes on object 2 and object 2 pushes back with an equal and opposite force (Newton's third law). The forces act for the SAME time Δt.</p><p>So F Δt is equal and opposite for the two objects: Δp₁ = −Δp₂. Whatever momentum one object gains, the other loses — the total does not change.</p></details><details class="note"><summary>3. Sticking together (perfectly inelastic)</summary><p>The objects move off together with one velocity: (m₁ + m₂) vf = m₁v₁i + m₂v₂i.</p><p>A 2.0 kg cart at 6.0 m/s hits a 4.0 kg cart at rest and they stick: vf = (2.0 × 6.0) ÷ 6.0 = 2.0 m/s. Head-on: 3.0 kg at +4.0 m/s and 2.0 kg at −6.0 m/s stick → total p = 0 → they stop.</p></details><details class="note"><summary>4. Bouncing collisions</summary><p>When the objects separate, there are two final velocities. If you know one, conservation of momentum gives the other.</p><p>0.50 kg at 4.0 m/s hits 1.5 kg at rest; the 0.50 kg ball bounces back at 2.0 m/s: 2.0 = 0.50(−2.0) + 1.5 v → v = 2.0 m/s.</p></details><details class="note"><summary>5. Kinetic energy: elastic or inelastic?</summary><p>Momentum is conserved in EVERY collision of an isolated system. Kinetic energy is conserved only in elastic collisions.</p><p>Compare KE = ½ m v² before and after. Sticking-cart example: 36 J → 12 J (inelastic, 24 J lost). Bouncing-ball example: 4.0 J → 4.0 J (elastic).</p><div class="tw"><table><thead><tr><th>Type</th><th>Momentum</th><th>Kinetic energy</th><th>Example</th></tr></thead><tbody><tr><td>Elastic</td><td>Conserved</td><td>Conserved</td><td>Pool balls, gas molecules</td></tr><tr><td>Inelastic</td><td>Conserved</td><td>Some lost</td><td>Car bumpers, a bouncing ball</td></tr><tr><td>Perfectly inelastic</td><td>Conserved</td><td>Most lost</td><td>Objects stick: clay, coupling train cars</td></tr></tbody></table></div></details><details class="note"><summary>6. Recoil and explosions</summary><p>If everything starts at rest, the total momentum is ZERO before, so it is zero after: m₁v₁f + m₂v₂f = 0. The pieces move in opposite directions.</p><p>A 4.0 kg rifle fires a 0.010 kg bullet at 400 m/s: 0 = 0.010(400) + 4.0 v → v = −1.0 m/s (recoil). Lighter piece → faster; heavier piece → slower.</p></details><details class="note"><summary>7. Ballistic pendulums and 2-D collisions</summary><p>Ballistic pendulum: momentum is conserved in the collision, then energy is conserved in the swing: v = √(2 g h) for the block-and-bullet, then m(bullet) v(bullet) = (m + M) v.</p><p>In two dimensions, momentum is conserved separately in x and in y. A 1000 kg car going east at 20 m/s and a 1500 kg car going north at 10 m/s stick: px = 20 000, py = 15 000 → p = 25 000 kg·m/s, vf = 10 m/s at 36.9° north of east.</p></details><details class="note" open><summary>The 5-step routine</summary><ol class="routine"><li><b>Read</b> — List masses and velocities; what is unknown?</li><li><b>Sign</b> — Choose + direction; sign every velocity.</li><li><b>Before</b> — Total momentum before = Σ m vi.</li><li><b>After</b> — Write total after with the unknown; set equal and solve.</li><li><b>Check</b> — Direction sensible? KE not increased (unless an explosion)?</li></ol></details>
+<h3>Key ideas and formulas</h3>
+<ul class="facts"><li>Isolated system: p(before) = p(after)</li><li>m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f</li><li>Stick together: (m₁ + m₂) vf = m₁v₁i + m₂v₂i</li><li>From rest: m₁v₁f + m₂v₂f = 0</li><li>Elastic: KE conserved too</li><li>Inelastic: KE lost; momentum still conserved</li><li>Ballistic pendulum: v = √(2 g h) after</li><li>2-D: conserve px and py separately</li></ul>
+<h3>Common mistakes</h3>
+<div class="grid"><div class="card"><b>⚠ Ignoring direction</b><br>Opposite motion → negative velocity.</div><div class="card"><b>⚠ Adding masses wrongly</b><br>Stuck objects: use (m₁ + m₂) vf.</div><div class="card"><b>⚠ "KE is always conserved"</b><br>Only in elastic collisions.</div><div class="card"><b>⚠ "Momentum is lost in a crash"</b><br>Total momentum is always conserved if isolated.</div><div class="card"><b>⚠ Explosion: total ≠ 0</b><br>From rest, total momentum stays zero.</div><div class="card"><b>⚠ Ballistic pendulum in one step</b><br>Momentum in the collision, energy in the swing.</div></div>
+</section>
+
+<section id="examples">
+<h2><span class="num">4</span>Step-by-step worked examples</h2>
+<p class="meta">Try each step yourself first, then press <b>Next step</b> to check.</p>
+<div id="exList"></div>
+</section>
+
+<section id="drill">
+<h2><span class="num">5</span>Quick drill</h2>
+<p class="meta">New random questions every time. Choose the positive direction as stated and keep signs. Answers within about 2% are accepted.</p>
+<div class="drill">
+<div class="prob" id="dProb"></div>
+<div class="numrow"><input id="dIn" inputmode="decimal" aria-label="Your answer" placeholder="Your answer"><span id="dUnit"></span><button id="dCheck">Check</button><button class="alt" id="dNew">New question</button></div>
+<div id="dFb" class="fb" aria-live="polite"></div>
+<div>Streak: <b id="dStreak">0</b></div>
+</div>
+</section>
+
+<section id="worksheets">
+<h2><span class="num">6</span>Practice worksheets</h2>
+<p class="meta">Choose your level. For number answers, type only the number (e.g. 4.4 or 0.89); the unit is shown for you. Sensible rounding is accepted.</p>
+<div class="tabs" role="tablist" id="wsTabs"></div>
+<div id="wsBody"></div>
+</section>
+
+<section id="test">
+<h2><span class="num">7</span>EST-style practice test</h2>
+<p class="meta">15 multiple-choice questions in SAT / ACT / EST style. Choose one answer for each, then press <b>Check answers</b>.</p>
+<div id="quiz"></div>
+<button id="qCheck">Check answers</button><button class="alt" id="qReset">Try again</button>
+<div id="qScore" class="score" aria-live="polite"></div>
+</section>
+
+<section id="homework">
+<h2><span class="num">8</span>Submit your homework</h2>
+<p>Your homework is a Microsoft Forms quiz: 10 multiple-choice questions marked automatically, plus 3 written questions marked by your teacher. In the written answers, show your working, units and reasons.</p>
+<div class="warn"><b>Before you start:</b> enter your full name and class, answer every question, and check your answers before pressing Submit. Do not enter your homework answers on this page.</div>
+<div class="hw" id="hwBox"></div>
+</section>
+
+<section id="checklist">
+<h2><span class="num">9</span>Before you submit — checklist</h2>
+<div class="check" id="checkList"></div>
+</section>
+
+</main>
+<footer>© 2026 Nermeen Shosha. All Rights Reserved.<br>Grade 12 Physics • Conservation of Momentum • Student learning resource</footer>
+<script>
+// TEACHER: paste your Microsoft Forms link between the quotes below, then save this file.
+const FORM_URL = "";
+
+const DATA = {"examples":[{"id":"WE1","title":"Why momentum is conserved","q":"Two ice skaters push each other apart. Use Newton's third law to explain why their total momentum stays zero.","steps":[["Read","Explain using forces."],["Sign","Skater A pushes right, B pushes left."],["Before","Both at rest: total p = 0."],["After","The forces are equal and opposite and act for the same time, so Δp(A) = −Δp(B). Their momenta are equal in size and opposite → total still 0."],["Check","The lighter skater moves faster ✔"]],"ans":"Equal and opposite forces for the same time give equal and opposite Δp","tip":"Third law → conservation."},{"id":"WE2","title":"Sticking together","q":"A 2.0 kg cart moving at 6.0 m/s hits a 4.0 kg cart at rest. They stick together. Find their final velocity.","steps":[["Read","Perfectly inelastic."],["Sign","Right = +."],["Before","p = 2.0 × 6.0 + 4.0 × 0 = 12 kg·m/s"],["After","(2.0 + 4.0) vf = 12 → vf = 2.0 m/s"],["Check","Slower than 6.0 m/s, same direction ✔"]],"ans":"2.0 m/s in the original direction","tip":"Add the masses after."},{"id":"WE3","title":"Rear-end collision","q":"A 1200 kg car at 20 m/s hits the back of an 800 kg car moving at 10 m/s in the same direction. They lock together. Find their speed.","steps":[["Read","Both moving forward."],["Sign","Forward = +."],["Before","1200 × 20 + 800 × 10 = 24 000 + 8000 = 32 000 kg·m/s"],["After","2000 vf = 32 000 → vf = 16 m/s"],["Check","Between 10 and 20 m/s ✔"]],"ans":"16 m/s forward","tip":"Add both momenta before."},{"id":"WE4","title":"Head-on collision","q":"A 3.0 kg cart moving right at 4.0 m/s collides head-on with a 2.0 kg cart moving left at 6.0 m/s. They stick. Find the final velocity.","steps":[["Read","Opposite directions."],["Sign","Right = +: v₁i = +4.0, v₂i = −6.0 m/s."],["Before","3.0(4.0) + 2.0(−6.0) = 12 − 12 = 0"],["After","5.0 vf = 0 → vf = 0"],["Check","Equal and opposite momenta → they stop ✔"]],"ans":"0 m/s (they stop)","tip":"Signs make the difference."},{"id":"WE5","title":"A bouncing collision","q":"A 0.50 kg ball moving at 4.0 m/s hits a 1.5 kg ball at rest. The 0.50 kg ball bounces straight back at 2.0 m/s. Find the velocity of the 1.5 kg ball.","steps":[["Read","Two final velocities; one is known."],["Sign","Original direction = +: v₁f = −2.0 m/s."],["Before","0.50 × 4.0 = 2.0 kg·m/s"],["After","2.0 = 0.50(−2.0) + 1.5 v₂f → 1.5 v₂f = 3.0 → v₂f = 2.0 m/s"],["Check","Positive: moves forward ✔"]],"ans":"2.0 m/s forward","tip":"Bounce back = negative."},{"id":"WE6","title":"Kinetic energy in WE2","q":"For the carts in WE2, find the kinetic energy before and after. Is the collision elastic?","steps":[["Read","Compare KE."],["Sign","KE has no sign (scalar)."],["Before","½ × 2.0 × 6.0² = 36 J"],["After","½ × 6.0 × 2.0² = 12 J → 24 J lost (2/3)"],["Check","KE decreased → inelastic (perfectly, they stuck) ✔"]],"ans":"36 J → 12 J; perfectly inelastic","tip":"Momentum conserved, KE not."},{"id":"WE7","title":"Kinetic energy in WE5","q":"For the balls in WE5, find the total kinetic energy before and after. Is the collision elastic?","steps":[["Read","Compare KE."],["Sign","Use speeds."],["Before","½ × 0.50 × 4.0² = 4.0 J"],["After","½ × 0.50 × 2.0² + ½ × 1.5 × 2.0² = 1.0 + 3.0 = 4.0 J"],["Check","KE unchanged → elastic ✔"]],"ans":"4.0 J → 4.0 J; elastic","tip":"Elastic = KE conserved."},{"id":"WE8","title":"Recoil of a rifle","q":"A 4.0 kg rifle at rest fires a 10 g bullet at 400 m/s. Find the recoil velocity of the rifle.","steps":[["Read","Starts at rest."],["Sign","Bullet direction = +; 10 g = 0.010 kg."],["Before","Total p = 0"],["After","0 = 0.010 × 400 + 4.0 v → v = −4.0 ÷ 4.0 = −1.0 m/s"],["Check","Rifle moves backward, much slower ✔"]],"ans":"1.0 m/s backward","tip":"From rest: total stays zero."},{"id":"WE9","title":"An explosion","q":"A 6.0 kg object at rest explodes into two pieces. The 2.0 kg piece flies right at 9.0 m/s. Find the velocity of the other piece.","steps":[["Read","Explosion from rest."],["Sign","Right = +."],["Before","Total p = 0"],["After","0 = 2.0(9.0) + 4.0 v → v = −18 ÷ 4.0 = −4.5 m/s"],["Check","Opposite direction; heavier piece slower ✔"]],"ans":"4.5 m/s to the left","tip":"Pieces fly apart in opposite directions."},{"id":"WE10","title":"Skaters pushing apart","q":"A 60 kg skater and a 40 kg skater stand at rest and push apart. The 40 kg skater moves off at 3.0 m/s. Find the velocity of the 60 kg skater.","steps":[["Read","From rest."],["Sign","40 kg skater's direction = +."],["Before","Total p = 0"],["After","0 = 40(3.0) + 60 v → v = −2.0 m/s"],["Check","Heavier skater slower, opposite way ✔"]],"ans":"2.0 m/s in the opposite direction","tip":"m₁v₁ = −m₂v₂."},{"id":"WE11","title":"Ballistic pendulum","q":"A 20 g bullet is fired into a 1.0 kg block hanging on strings. The block (with the bullet) swings up 0.20 m. Find the speed of the bullet.","steps":[["Read","Two stages: collision, then swing."],["Sign","Bullet direction = +."],["Before","Swing (energy): v = √(2 g h) = √(2 × 9.8 × 0.20) = 1.98 m/s just after the collision"],["After","Collision (momentum): 0.020 v(bullet) = 1.02 × 1.98 → v(bullet) = 101 m/s"],["Check","Bullet much faster than the block ✔"]],"ans":"≈ 101 m/s","tip":"Momentum for the hit, energy for the swing."},{"id":"WE12","title":"A two-dimensional collision","q":"A 1000 kg car moving east at 20 m/s collides with a 1500 kg car moving north at 10 m/s. They lock together. Find their velocity just after the collision.","steps":[["Read","2-D, perfectly inelastic."],["Sign","East = +x, north = +y."],["Before","px = 1000 × 20 = 20 000;  py = 1500 × 10 = 15 000 kg·m/s"],["After","p = √(20 000² + 15 000²) = 25 000;  vf = 25 000 ÷ 2500 = 10 m/s;  tan θ = 15 000 ÷ 20 000 → θ = 36.9° N of E"],["Check","x and y conserved separately ✔"]],"ans":"10 m/s at 36.9° north of east","tip":"Conserve px and py separately."}],"worksheets":[{"id":"A","name":"Worksheet A — Support","level":"Support (guided)","time":"25 minutes","intro":"Hints are given for every calculation. Use the 5-step routine: Read → Sign → Before → After → Check. Take right as positive.","parts":[{"h":"Part 1: Key ideas","items":[{"q":"The law of conservation of momentum says that, in an isolated system, total momentum…","type":"choice","opts":["stays the same","always increases","always decreases","becomes zero"],"ans":0,"marks":1,"work":"Before = after."},{"q":"Momentum is conserved when…","type":"choice","opts":["kinetic energy is conserved","the objects are moving fast","no external net force acts on the system","the objects are the same mass"],"ans":2,"marks":1,"work":"Isolated system."},{"q":"In a perfectly inelastic collision, the objects…","type":"choice","opts":["bounce apart with no KE loss","stick together","stop completely every time","gain kinetic energy"],"ans":1,"marks":1,"work":"Common final velocity."},{"q":"In an elastic collision…","type":"choice","opts":["both momentum and kinetic energy are conserved","only kinetic energy is conserved","neither is conserved","only mass is conserved"],"ans":0,"marks":1,"work":"Elastic = KE conserved too."},{"q":"Conservation of momentum can be explained using…","type":"choice","opts":["Ohm's law","Newton's first law only","the law of gravitation","Newton's third law"],"ans":3,"marks":1,"work":"Equal and opposite forces."}]},{"h":"Part 2: Guided calculations","items":[{"q":"A 2.0 kg cart moves at 3.0 m/s toward a 1.0 kg cart at rest. Find the total momentum before the collision.","hint":"p = 2.0 × 3.0 + 1.0 × 0","type":"num","ans":6,"unit":"kg·m/s","marks":2,"work":"6.0 + 0 = 6.0 kg·m/s","scheme":"M1; A1 6.0 kg·m/s"},{"q":"The carts in the last question stick together. Find their final velocity.","hint":"vf = total p ÷ total mass = 6.0 ÷ (2.0 + 1.0)","type":"num","ans":2,"unit":"m/s","marks":2,"work":"6.0 ÷ 3.0 = 2.0 m/s","scheme":"M1 (m₁ + m₂)vf; A1 2.0 m/s"},{"q":"A 4.0 kg cart moves right at 2.0 m/s and a 2.0 kg cart moves left at 3.0 m/s. Find the total momentum.","hint":"4.0 × 2.0 + 2.0 × (−3.0)","type":"num","ans":2,"unit":"kg·m/s","marks":2,"work":"8.0 − 6.0 = +2.0 kg·m/s","scheme":"M1 signs; A1 +2.0"},{"q":"A 2.0 kg launcher at rest fires a 0.050 kg ball at 10 m/s. Find the recoil velocity of the launcher (include the sign).","hint":"0 = 0.050 × 10 + 2.0 v → v = −0.50 ÷ 2.0","type":"num","ans":-0.25,"unit":"m/s","marks":2,"work":"v = −0.25 m/s (backward)","scheme":"M1 total = 0; A1 −0.25 m/s"},{"q":"A 50 kg skater and a 25 kg skater push apart from rest. The 25 kg skater moves at 4.0 m/s. Find the velocity of the 50 kg skater (include the sign).","hint":"0 = 25 × 4.0 + 50 v","type":"num","ans":-2,"unit":"m/s","marks":2,"work":"v = −100 ÷ 50 = −2.0 m/s","scheme":"M1; A1 −2.0 m/s"}]},{"h":"Part 3: Trolleys in the lab","pre":"A 1.5 kg trolley moving at 4.0 m/s hits a 0.50 kg trolley at rest. They stick together.","items":[{"q":"Find the total momentum before the collision.","hint":"1.5 × 4.0","type":"num","ans":6,"unit":"kg·m/s","marks":2,"work":"1.5 × 4.0 = 6.0 kg·m/s","scheme":"M1; A1 6.0"},{"q":"Find the final velocity.","hint":"6.0 ÷ (1.5 + 0.50)","type":"num","ans":3,"unit":"m/s","marks":2,"work":"6.0 ÷ 2.0 = 3.0 m/s","scheme":"M1; A1 3.0 m/s"},{"q":"Find the kinetic energy before the collision.","hint":"KE = ½ × 1.5 × 4.0²","type":"num","ans":12,"unit":"J","marks":2,"work":"½ × 1.5 × 16 = 12 J","scheme":"M1; A1 12 J"}]},{"h":"Part 4: Think about it","items":[{"q":"After the trolleys stick, their KE is ½ × 2.0 × 3.0² = 9.0 J. The collision is…","type":"choice","opts":["elastic: KE conserved","inelastic: momentum conserved, 3.0 J of KE lost","impossible: momentum was lost","an explosion"],"ans":1,"marks":1,"work":"12 J → 9.0 J."}]}]},{"id":"B","name":"Worksheet B — Core","level":"Core (on level)","time":"35 minutes","intro":"Choose a positive direction for every problem and keep signs. Write the conservation equation before substituting.","parts":[{"h":"Part 1: A rear-end collision","pre":"A 1000 kg car at 15 m/s hits the back of a 1500 kg car moving at 5.0 m/s in the same direction. They lock together.","items":[{"q":"Find the total momentum before the collision.","type":"num","ans":22500,"unit":"kg·m/s","marks":2,"work":"1000 × 15 + 1500 × 5.0 = 22 500 kg·m/s","scheme":"M1; A1 2.25 × 10⁴"},{"q":"Find the velocity of the cars just after the collision.","type":"num","ans":9,"unit":"m/s","marks":2,"work":"22 500 ÷ 2500 = 9.0 m/s","scheme":"M1; A1 9.0 m/s"},{"q":"Find the total kinetic energy before the collision.","type":"num","ans":131250,"unit":"J","marks":1,"work":"½(1000)(15²) + ½(1500)(5.0²) = 112 500 + 18 750 = 131 250 J","scheme":"B1 1.31 × 10⁵ J"},{"q":"Find the kinetic energy after the collision.","type":"num","ans":101250,"unit":"J","marks":1,"work":"½(2500)(9.0²) = 101 250 J","scheme":"B1 1.01 × 10⁵ J"},{"q":"How much kinetic energy is lost?","type":"num","ans":30000,"unit":"J","marks":1,"work":"131 250 − 101 250 = 30 000 J","scheme":"B1 3.0 × 10⁴ J"}]},{"h":"Part 2: Bouncing balls","pre":"A 0.20 kg ball moving at +5.0 m/s hits a 0.30 kg ball at rest. Afterwards the 0.20 kg ball moves at −1.0 m/s.","items":[{"q":"Find the velocity of the 0.30 kg ball after the collision.","type":"num","ans":4,"unit":"m/s","marks":2,"work":"1.0 = 0.20(−1.0) + 0.30 v → v = 4.0 m/s","scheme":"M1 equation; A1 4.0 m/s"},{"q":"Find the total kinetic energy before.","type":"num","ans":2.5,"unit":"J","marks":1,"work":"½ × 0.20 × 25 = 2.5 J","scheme":"B1"},{"q":"Find the total kinetic energy after.","type":"num","ans":2.5,"unit":"J","marks":1,"work":"0.10 + 2.4 = 2.5 J","scheme":"B1"},{"q":"This collision is…","type":"choice","opts":["an explosion","perfectly inelastic","inelastic","elastic"],"ans":3,"marks":1,"work":"KE unchanged."}]},{"h":"Part 3: A firework","pre":"A 0.80 kg firework at rest explodes into two pieces. A 0.30 kg piece flies east at 20 m/s.","items":[{"q":"Find the velocity of the 0.50 kg piece (east = +).","type":"num","ans":-12,"unit":"m/s","marks":2,"work":"0 = 0.30(20) + 0.50 v → v = −12 m/s (west)","scheme":"M1 total = 0; A1 −12 m/s"},{"q":"Find the total kinetic energy released.","type":"num","ans":96,"unit":"J","marks":2,"work":"½(0.30)(400) + ½(0.50)(144) = 60 + 36 = 96 J","scheme":"M1; A1 96 J"}]},{"h":"Part 4: Recoil and head-on","items":[{"q":"A 500 kg cannon at rest fires a 5.0 kg ball at 200 m/s. Find the recoil velocity of the cannon.","type":"num","ans":-2,"unit":"m/s","marks":2,"work":"0 = 5.0(200) + 500 v → v = −2.0 m/s","scheme":"M1; A1 −2.0 m/s"},{"q":"A 2.0 kg cart at +3.0 m/s and a 1.0 kg cart at −6.0 m/s collide and stick. Find the final velocity.","type":"num","ans":0,"unit":"m/s","marks":2,"work":"6.0 − 6.0 = 0 → vf = 0","scheme":"M1; A1 0"},{"q":"Momentum of a system is conserved only when…","type":"choice","opts":["the objects stick together","the collision is elastic","the external net force on the system is zero","the objects have equal mass"],"ans":2,"marks":1,"work":"Isolated system."},{"q":"In every collision of an isolated system, which quantity is always conserved?","type":"choice","opts":["total kinetic energy","total momentum","the speed of each object","the momentum of each object"],"ans":1,"marks":1,"work":"Only the TOTAL momentum."}]}]},{"id":"C","name":"Worksheet C — Challenge","level":"Extension (stretch)","time":"45 minutes","intro":"Multi-step problems. State your positive direction(s) and write each conservation equation. g = 9.8 m/s².","parts":[{"h":"Part 1: Ballistic pendulum","pre":"A 15 g bullet is fired into a 2.0 kg block hanging on strings. The block (with the bullet) swings up 0.10 m.","items":[{"q":"Find the speed of the block and bullet just after the collision.","type":"num","ans":1.4,"unit":"m/s","marks":2,"work":"v = √(2 × 9.8 × 0.10) = 1.4 m/s","scheme":"M1 energy; A1 1.4 m/s"},{"q":"Find the speed of the bullet before it hit the block.","type":"num","ans":188.07,"tolAbs":1,"unit":"m/s","marks":2,"work":"0.015 v = 2.015 × 1.4 → v = 188 m/s","scheme":"M1 momentum; A1 188 m/s"},{"q":"What percentage of the bullet's kinetic energy is lost in the collision?","type":"num","ans":99.26,"tolAbs":0.1,"unit":"%","marks":2,"work":"KE before = ½(0.015)(188²) = 265 J; after = ½(2.015)(1.4²) = 1.97 J → 99.3% lost","scheme":"M1 both KEs; A1 99.3%"}]},{"h":"Part 2: A crash at a junction","pre":"A 1200 kg car moving east at 15 m/s collides with a 1800 kg truck moving north at 10 m/s. They lock together.","items":[{"q":"Find the total x-momentum (east).","type":"num","ans":18000,"unit":"kg·m/s","marks":1,"work":"1200 × 15 = 18 000 kg·m/s","scheme":"B1"},{"q":"Find the total y-momentum (north).","type":"num","ans":18000,"unit":"kg·m/s","marks":1,"work":"1800 × 10 = 18 000 kg·m/s","scheme":"B1"},{"q":"Find the speed of the wreck just after the collision.","type":"num","ans":8.4853,"tolAbs":0.02,"unit":"m/s","marks":2,"work":"p = √(18 000² + 18 000²) = 25 456; v = 25 456 ÷ 3000 = 8.49 m/s","scheme":"M1 Pythagoras; A1 8.49 m/s"},{"q":"Find its direction in degrees north of east.","type":"num","ans":45,"unit":"°","marks":1,"work":"tan θ = 18 000 ÷ 18 000 → 45°","scheme":"B1 45°"}]},{"h":"Part 3: Elastic collisions","items":[{"q":"A ball moving at 5.0 m/s hits an identical ball at rest in a perfectly elastic head-on collision. Afterwards…","type":"choice","opts":["both stop","both move at 2.5 m/s","the first ball stops and the second moves at 5.0 m/s","the first bounces back at 5.0 m/s"],"ans":2,"marks":1,"work":"Equal masses swap velocities (Newton's cradle).","scheme":"1 mark for A"},{"q":"A 1.0 kg ball at 6.0 m/s hits a 2.0 kg ball at rest elastically. Using v₁f = (m₁ − m₂) v₁i ÷ (m₁ + m₂), find the velocity of the 1.0 kg ball after.","type":"num","ans":-2,"unit":"m/s","marks":2,"work":"(1.0 − 2.0)(6.0) ÷ 3.0 = −2.0 m/s","scheme":"M1; A1 −2.0 m/s"},{"q":"Using v₂f = 2m₁ v₁i ÷ (m₁ + m₂), find the velocity of the 2.0 kg ball after.","type":"num","ans":4,"unit":"m/s","marks":2,"work":"2(1.0)(6.0) ÷ 3.0 = 4.0 m/s (check: 1.0(−2.0) + 2.0(4.0) = 6.0 ✔)","scheme":"M1; A1 4.0 m/s"}]},{"h":"Part 4: EST-style","items":[{"q":"An 80 kg astronaut at rest in space throws a 2.0 kg wrench at 8.0 m/s. Find her velocity (include the sign).","type":"num","ans":-0.2,"unit":"m/s","marks":2,"work":"0 = 2.0(8.0) + 80 v → v = −0.20 m/s","scheme":"M1; A1 −0.20 m/s"},{"q":"A 60 kg student running at 5.0 m/s jumps onto a 30 kg cart at rest. Find their common speed.","type":"num","ans":3.3333,"tolAbs":0.02,"unit":"m/s","marks":2,"work":"60 × 5.0 = 90 v → v = 3.33 m/s","scheme":"M1; A1 3.33 m/s"},{"q":"In a car crash, momentum is conserved but kinetic energy is not because…","type":"choice","opts":["KE is converted into heat, sound and deformation, but the forces on the cars are still equal and opposite","momentum is a scalar","kinetic energy is a vector","friction stops momentum from changing"],"ans":0,"marks":1,"work":"Energy changes form; momentum has nowhere else to go.","scheme":"1 mark for A"},{"q":"A truck and a small car collide. During the collision, the size of the change in momentum of the car is…","type":"choice","opts":["zero","larger than that of the truck","smaller than that of the truck","equal to that of the truck"],"ans":3,"marks":1,"work":"Δp(car) = −Δp(truck).","scheme":"1 mark for A"}]}]}],"quiz":[{"q":"Total momentum of a system is conserved when…","o":["kinetic energy is conserved","the external net force is zero","the objects stick together","the objects are at rest"],"a":1,"e":"Isolated system."},{"q":"A 3.0 kg cart at 4.0 m/s hits a 1.0 kg cart at rest; they stick. Their final speed is…","o":["12 m/s","4.0 m/s","3.0 m/s","1.0 m/s"],"a":2,"e":"12 ÷ 4.0."},{"q":"In a perfectly inelastic collision…","o":["the objects stick and the most KE is lost","KE is conserved","momentum is lost","the objects bounce apart"],"a":0,"e":"Stick together."},{"q":"A 2.0 kg gun fires a 0.020 kg bullet at 300 m/s. The gun's recoil speed is…","o":["30 m/s","300 m/s","0.30 m/s","3.0 m/s"],"a":3,"e":"6.0 ÷ 2.0."},{"q":"An object at rest explodes into two pieces. Their total momentum after is…","o":["positive","equal to the energy released","zero","the sum of their speeds"],"a":2,"e":"Zero before."},{"q":"A 1.0 kg ball at +6.0 m/s and a 2.0 kg ball at −3.0 m/s collide and stick. The final velocity is…","o":["+1.0 m/s","0","−1.0 m/s","+3.0 m/s"],"a":1,"e":"6 − 6 = 0."},{"q":"Which is conserved in an elastic collision?","o":["neither","momentum only","kinetic energy only","momentum and kinetic energy"],"a":3,"e":"Elastic."},{"q":"Conservation of momentum follows directly from…","o":["Newton's third law","Newton's law of gravitation","the work–energy theorem","Hooke's law"],"a":0,"e":"Equal and opposite forces."},{"q":"A 50 kg skater pushes off a 70 kg skater from rest. If the 50 kg skater moves at 1.4 m/s, the 70 kg skater moves at…","o":["2.0 m/s the opposite way","1.4 m/s the same way","1.0 m/s the opposite way","0"],"a":2,"e":"70 ÷ 70."},{"q":"During a collision between a truck and a small car, the forces on them are…","o":["bigger on the car","equal and opposite","bigger on the truck","zero"],"a":1,"e":"Third law."},{"q":"A 0.20 kg ball at 3.0 m/s hits a 0.40 kg ball at rest and stops. The 0.40 kg ball moves at…","o":["1.5 m/s","3.0 m/s","6.0 m/s","0.60 m/s"],"a":0,"e":"0.60 ÷ 0.40."},{"q":"Two carts stick after colliding. KE before = 40 J, KE after = 15 J. The collision is…","o":["impossible","elastic","an explosion","inelastic"],"a":3,"e":"KE lost."},{"q":"In a ballistic pendulum, which is conserved during the bullet's collision with the block?","o":["kinetic energy","momentum","gravitational potential energy","the bullet's speed"],"a":1,"e":"Collision → momentum."},{"q":"In a 2-D collision, momentum is conserved…","o":["only if the angle is 90°","only in the x direction","only in total speed","separately in the x and y directions"],"a":3,"e":"Vector law."},{"q":"A heavy ball hits a light ball at rest. After the collision, compared with before, the TOTAL momentum is…","o":["smaller","greater","the same","zero"],"a":2,"e":"Conserved."}],"slides":[{"t":"Conservation of Momentum","b":["A Grade 12 lesson","Collisions • explosions • recoil"],"dark":true},{"t":"Learning objectives","b":["State the law of conservation of momentum for an isolated system (no external net force).","Explain why momentum is conserved using Newton's third law.","Solve collisions in which objects stick together: (m₁ + m₂) vf = m₁v₁i + m₂v₂i.","Solve collisions in which objects bounce, finding an unknown final velocity.","Classify collisions as elastic, inelastic or perfectly inelastic using kinetic energy.","Solve recoil and explosion problems where the total momentum is zero.","Apply conservation of momentum to ballistic pendulums and two-dimensional collisions."]},{"t":"The law","b":["Isolated system: p(before) = p(after)","m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f"]},{"t":"Why? Newton's third law","b":["Equal and opposite forces","Same time → Δp₁ = −Δp₂"]},{"t":"Sticking together","b":["(m₁ + m₂) vf = m₁v₁i + m₂v₂i","2.0 kg at 6.0 m/s + 4.0 kg at rest → 2.0 m/s"]},{"t":"Bouncing","b":["0.50 kg: 4.0 → −2.0 m/s","1.5 kg: 0 → 2.0 m/s"]},{"t":"Elastic or inelastic?","b":["Compare KE before and after","36 J → 12 J: inelastic","4.0 J → 4.0 J: elastic"]},{"t":"Recoil and explosions","b":["From rest: total p = 0","Rifle: −1.0 m/s"]},{"t":"Ballistic pendulum and 2-D","b":["Momentum, then energy","Conserve px and py separately"]},{"t":"Common traps","b":["Ignoring direction: Opposite motion → negative velocity.","Adding masses wrongly: Stuck objects: use (m₁ + m₂) vf.","\"KE is always conserved\": Only in elastic collisions.","\"Momentum is lost in a crash\": Total momentum is always conserved if isolated.","Explosion: total ≠ 0: From rest, total momentum stays zero.","Ballistic pendulum in one step: Momentum in the collision, energy in the swing."]},{"t":"Your next steps","b":["1. Study the notes and worked examples","2. Complete Worksheet A, B or C","3. Submit the Microsoft Forms homework"],"dark":true}]};
+const $ = id => document.getElementById(id);
+const L = "ABCDEFGH";
+const h = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+// ---- slides
+let si = 0;
+function showSlide(){const s=DATA.slides[si];const el=$("slide");el.className="slide"+(s.dark?" dark":"");
+el.innerHTML="<h3>"+h(s.t)+"</h3><ul>"+s.b.map(x=>"<li>"+h(x)+"</li>").join("")+"</ul>";
+$("slideNo").textContent=(si+1)+" / "+DATA.slides.length;$("prev").disabled=si===0;$("next").disabled=si===DATA.slides.length-1;}
+$("prev").onclick=()=>{if(si>0){si--;showSlide();}};$("next").onclick=()=>{if(si<DATA.slides.length-1){si++;showSlide();}};
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;const r=$("slides").getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){if(e.key==="ArrowRight")$("next").click();if(e.key==="ArrowLeft")$("prev").click();}});
+showSlide();
+
+// ---- worked examples
+$("exList").innerHTML=DATA.examples.map((e,i)=>'<div class="ex" data-i="'+i+'"><h3>Example '+(i+1)+': '+h(e.title)+'</h3><p>'+h(e.q)+'</p>'+
+ e.steps.map((s,k)=>'<div class="step"><span class="lab">'+(k+1)+'. '+h(s[0])+'</span><span>'+h(s[1])+'</span></div>').join("")+
+ '<div class="ans">Answer: '+h(e.ans)+' &nbsp;•&nbsp; <i>'+h(e.tip)+'</i></div><button class="amber nx">Next step</button><button class="alt all">Show all</button><button class="alt rs">Reset</button></div>').join("");
+document.querySelectorAll(".ex").forEach(box=>{const steps=[...box.querySelectorAll(".step")],ans=box.querySelector(".ans"),nx=box.querySelector(".nx");
+ const upd=()=>{const n=steps.filter(s=>s.classList.contains("show")).length;nx.textContent=n<steps.length?"Next step":(ans.classList.contains("show")?"Done ✔":"Show answer");};
+ nx.onclick=()=>{const hid=steps.find(s=>!s.classList.contains("show"));if(hid)hid.classList.add("show");else ans.classList.add("show");upd();};
+ box.querySelector(".all").onclick=()=>{steps.forEach(s=>s.classList.add("show"));ans.classList.add("show");upd();};
+ box.querySelector(".rs").onclick=()=>{steps.forEach(s=>s.classList.remove("show"));ans.classList.remove("show");upd();};});
+
+// ---- number parsing
+function parseNum(str){if(str==null)return NaN;let s=String(str).trim().toLowerCase().replace(/\s+/g,"").replace(/,/g,"").replace(/[×x*]10\^?/g,"e").replace(/[−–]/g,"-");
+ const sup={"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9","⁻":"-"};s=s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g,c=>sup[c]);
+ if(!/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/.test(s))return NaN;return Number(s);}
+const close=(v,a)=>Math.abs(v-a)<=Math.abs(a)*0.01+1e-12;
+const fmt=n=>(Math.abs(n)>=1e6)?n.toExponential(2).replace("e+"," × 10^"):Math.abs(n)<0.001&&n!==0?n.toExponential(1).replace("e"," × 10^"):(n>=10000?n.toLocaleString("en-US").replace(/,/g," "):String(n));
+
+// ---- drill
+
+const G0=[
+ ()=>{const m1=r([1,2,3,4]),m2=r([1,2,4]),v=(m1+m2)*r([1,2,3]);return["A "+m1+" kg cart at "+v+" m/s hits a "+m2+" kg cart at rest. They stick. Final speed?","m/s",+(m1*v/(m1+m2)).toFixed(3)]},
+ ()=>{const M=r([2,4,5]),m=r([0.01,0.02,0.05]),v=r([200,400]);return["A "+M+" kg gun fires a "+m+" kg bullet at "+v+" m/s. Recoil velocity? (bullet direction = +)","m/s",+(-m*v/M).toFixed(3)]},
+ ()=>{const m1=r([2,3,4]),v1=r([3,5,6]),m2=r([1,2,3]),v2=r([-2,-4,2]);return["Carts: "+m1+" kg at "+v1+" m/s and "+m2+" kg at "+v2+" m/s collide and stick. Final velocity? (keep the sign)","m/s",+((m1*v1+m2*v2)/(m1+m2)).toFixed(3)]},
+ ()=>{const m1=r([1,2]),m2=r([3,4,6]),v1=r([6,9,12]);return["An object at rest explodes: a "+m1+" kg piece moves at +"+v1+" m/s. Velocity of the "+m2+" kg piece?","m/s",+(-m1*v1/m2).toFixed(3)]},
+ ()=>{const m1=r([0.5,1,2]),v=r([4,6,8]),m2=r([1.5,2,3,4]),v1f=r([-1,-2,1]),v2=(m1*v-m1*v1f)/m2,ok=m1*v1f*v1f+m2*v2*v2<=m1*v*v+1e-9&&v2>v1f;return["A "+m1+" kg ball at "+v+" m/s hits a "+m2+" kg ball at rest and then moves at "+v1f+" m/s. Velocity of the "+m2+" kg ball?","m/s",+v2.toFixed(3),ok]},
+ ()=>{const m=r([1000,1200,1500]),v=r([10,15,20]),M=r([500,1000,2000]);return["A "+m+" kg car at "+v+" m/s hits a "+M+" kg car at rest. They lock together. Final speed?","m/s",+(m*v/(m+M)).toFixed(3)]}];
+const nice=f=>{let q,n=0;do{q=f();n++}while(n<500&&(q[3]===false||Math.abs(Math.round(q[2]*10)-q[2]*10)>1e-6));return q};
+const DR=G0.map(f=>()=>nice(f));
+function r(a){return a[Math.floor(Math.random()*a.length)]}
+let cur=null,streak=0;
+function newDrill(){cur=r(DR)();$("dProb").textContent=cur[0];$("dUnit").textContent=cur[1];$("dIn").value="";$("dFb").textContent="";$("dFb").className="fb";}
+$("dNew").onclick=newDrill;
+$("dCheck").onclick=()=>{const v=parseNum($("dIn").value);const fb=$("dFb");
+ if(isNaN(v)){fb.className="fb bad";fb.textContent="Type a number, e.g. 2500 or 2.5e3.";return;}
+ if(Math.abs(v-cur[2])<=Math.abs(cur[2])*0.02+0.006){streak++;fb.className="fb ok";fb.textContent="Correct! "+fmt(+cur[2].toPrecision(3))+" "+cur[1]+(streak>=5?"  🎉 5 in a row!":"");}
+ else{streak=0;fb.className="fb bad";fb.textContent="Not quite. Answer: "+fmt(+cur[2].toPrecision(3))+" "+cur[1]+". Check: should the number get bigger or smaller?";}
+ $("dStreak").textContent=streak;};
+$("dIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("dCheck").click();});
+newDrill();
+
+// ---- worksheets
+let wsi=0;
+$("wsTabs").innerHTML=DATA.worksheets.map((w,i)=>'<button role="tab" aria-selected="'+(i===0)+'" data-i="'+i+'">'+h(w.name.replace("Worksheet ","").replace(" — ",": "))+'</button>').join("");
+$("wsTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{wsi=+b.dataset.i;$("wsTabs").querySelectorAll("button").forEach(x=>x.setAttribute("aria-selected",x===b));renderWS();});
+function renderWS(){const w=DATA.worksheets[wsi];let n=0,total=0;
+ let out='<h3>'+h(w.name)+'</h3><p class="meta">'+h(w.level)+' • '+h(w.time)+' • '+h(w.intro)+'</p>';
+ w.parts.forEach(p=>{out+='<h3 style="font-size:1.1rem;color:var(--blue)">'+h(p.h)+'</h3>'+(p.pre?'<div class="warn" style="margin:6px 0"><b>'+h(p.pre)+'</b></div>':'');
+  p.items.forEach(it=>{n++;total+=it.marks;const id="w"+wsi+"_"+n;
+   out+='<div class="q" data-k="'+n+'"><span class="mk">['+it.marks+']</span><div class="qt">'+n+'. '+h(it.q)+'</div>';
+   if(it.hint)out+='<div class="hint">Hint: '+h(it.hint)+'</div>';
+   if(it.type==="choice")out+='<div class="opts">'+it.opts.map((o,j)=>'<label><input type="radio" name="'+id+'" value="'+j+'">'+L[j]+'. '+h(o)+'</label>').join("")+'</div>';
+   else out+='<div class="numrow"><input id="'+id+'" inputmode="decimal" aria-label="Answer to question '+n+'" placeholder="Answer"><span>'+h(it.unit)+'</span></div>';
+   out+='<div class="fb" id="fb'+id+'"></div></div>';});});
+ out+='<button id="wsCheck">Check my answers</button><button class="alt" id="wsReset">Clear</button><button class="alt" onclick="window.print()">Print</button><div class="score" id="wsScore" aria-live="polite"></div>';
+ $("wsBody").innerHTML=out;
+ $("wsCheck").onclick=()=>{let sc=0,k=0;w.parts.forEach(p=>p.items.forEach(it=>{k++;const id="w"+wsi+"_"+k,fb=$("fb"+id);let ok=false,given=false;
+   if(it.type==="choice"){const s=document.querySelector('input[name="'+id+'"]:checked');given=!!s;ok=s&&+s.value===it.ans;}
+   else{const raw=$(id).value;given=raw.trim()!=="";ok=it.tolAbs!=null?Math.abs(parseNum(raw)-it.ans)<=it.tolAbs:close(parseNum(raw),it.ans);}
+   if(ok){sc+=it.marks;fb.className="fb ok";fb.textContent="✔ Correct — "+it.work;}
+   else{fb.className="fb bad";fb.textContent=(given?"✘ Not quite. ":"No answer. ")+"Answer: "+it.work;}}));
+  $("wsScore").textContent="Your score: "+sc+" / "+total+(sc/total>=0.85?" — excellent! Try the next level.":sc/total>=0.6?" — good. Review the ones you missed.":" — review the worked examples and try again.");};
+ $("wsReset").onclick=renderWS;}
+renderWS();
+
+// ---- EST practice test
+$("quiz").innerHTML=DATA.quiz.map((q,i)=>'<div class="q"><div class="qt">'+(i+1)+'. '+h(q.q)+'</div><div class="opts">'+q.o.map((o,j)=>'<label><input type="radio" name="q'+i+'" value="'+j+'">'+L[j]+'. '+h(o)+'</label>').join("")+'</div><div class="fb" id="qfb'+i+'"></div></div>').join("");
+$("qCheck").onclick=()=>{let sc=0;DATA.quiz.forEach((q,i)=>{const s=document.querySelector('input[name="q'+i+'"]:checked'),fb=$("qfb"+i);
+ if(s&&+s.value===q.a){sc++;fb.className="fb ok";fb.textContent="✔ Correct. "+q.e;}
+ else{fb.className="fb bad";fb.textContent=(s?"✘ Not quite. ":"No answer selected. ")+"Correct answer: "+L[q.a]+". "+q.o[q.a]+". "+q.e;}});
+ $("qScore").textContent="Your score: "+sc+" / "+DATA.quiz.length+" ("+Math.round(sc/DATA.quiz.length*100)+"%)";};
+$("qReset").onclick=()=>{document.querySelectorAll("#quiz input").forEach(x=>x.checked=false);document.querySelectorAll("#quiz .fb").forEach(x=>{x.textContent="";});$("qScore").textContent="";};
+
+// ---- homework
+$("hwBox").innerHTML=FORM_URL?'<a class="btn" href="'+FORM_URL.replace(/"/g,"%22")+'" target="_blank" rel="noopener noreferrer">Open Microsoft Forms homework ↗</a>':'<div class="warn">Your teacher has not added the homework link yet. Please ask your teacher for the Microsoft Forms link.</div>';
+
+// ---- checklist (remembered on this device only)
+const CL=["I can state the law of conservation of momentum.","I can explain it using Newton's third law.","I can solve stick-together and bounce collisions.","I can decide whether a collision is elastic using KE.","I can solve recoil and explosion problems.","I can solve ballistic pendulum and 2-D problems."];
+let saved={};try{saved=JSON.parse(localStorage.getItem("errors-checklist")||"{}")}catch(e){}
+$("checkList").innerHTML=CL.map((c,i)=>'<label><input type="checkbox" data-i="'+i+'"'+(saved[i]?" checked":"")+'>'+h(c)+'</label>').join("");
+$("checkList").addEventListener("change",e=>{saved[e.target.dataset.i]=e.target.checked;try{localStorage.setItem("errors-checklist",JSON.stringify(saved))}catch(err){}});
+</script>
+</body>
+</html>
